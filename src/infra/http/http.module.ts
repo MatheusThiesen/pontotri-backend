@@ -1,5 +1,5 @@
 import { AuthenticateUserUseCase } from "@/domain/application/use-cases/authenticate-user";
-import { RegisterUserUseCase } from "@/domain/application/use-cases/register-user";
+import { RegisterUseCase } from "@/domain/application/use-cases/register";
 import { Module } from "@nestjs/common";
 import { CryptographyModule } from "../cryptography/cryptography.module";
 import { DatabaseModule } from "../database/database.module";
@@ -9,6 +9,6 @@ import { CreateAccountController } from "./controllers/create-account.controller
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [AuthenticateController, CreateAccountController],
-  providers: [AuthenticateUserUseCase, RegisterUserUseCase],
+  providers: [AuthenticateUserUseCase, RegisterUseCase],
 })
 export class HttpModule {}
