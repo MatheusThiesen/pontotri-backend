@@ -1,5 +1,6 @@
 import { EditLocationUseCase } from "@/domain/application/use-cases/edit-location";
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
@@ -31,11 +32,15 @@ export class EditLocationController {
   ) {
     const { description, latitude, longitude } = body;
 
-    await this.editLocationUseCase.execute({
+    const result = await this.editLocationUseCase.execute({
       id,
       description,
       latitude,
       longitude,
     });
+
+    if (result.isLeft()) {
+      throw new BadRequestException();
+    }
   }
 }

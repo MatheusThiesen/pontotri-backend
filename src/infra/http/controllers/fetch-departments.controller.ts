@@ -1,12 +1,5 @@
-import { FetchLocationsUseCase } from "@/domain/application/use-cases/fetch-locations";
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Query,
-} from "@nestjs/common";
+import { FetchDepartmentsUseCase } from "@/domain/application/use-cases/fetch-departments";
+import { BadRequestException, Controller, Get, Query } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 
@@ -18,19 +11,17 @@ const fetchLocationsQuerySchema = z.object({
 
 type FetchLocationsQuery = z.infer<typeof fetchLocationsQuerySchema>;
 
-@Controller("/locations")
-export class FetchLocationsController {
-  constructor(private fetchLocationsUseCase: FetchLocationsUseCase) {}
+@Controller("/departments")
+export class FetchDepartmentsController {
+  constructor(private fetchDepartmentsUseCase: FetchDepartmentsUseCase) {}
 
   @Get()
-  @HttpCode(HttpStatus.OK)
   async handle(
     @Query(new ZodValidationPipe(fetchLocationsQuerySchema))
     query: FetchLocationsQuery
   ) {
     const { companyId, page, pagesize } = query;
-
-    const result = await this.fetchLocationsUseCase.execute({
+    const result = await this.fetchDepartmentsUseCase.execute({
       companyId,
       page,
       pagesize,
@@ -40,8 +31,6 @@ export class FetchLocationsController {
       throw new BadRequestException();
     }
 
-    return {
-      locations: result.value,
-    };
+    return result.value.departments;
   }
 }

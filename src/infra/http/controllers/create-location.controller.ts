@@ -1,5 +1,12 @@
 import { CreateLocationUseCase } from "@/domain/application/use-cases/create-location";
-import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 
@@ -24,11 +31,15 @@ export class CreateLocationController {
   ) {
     const { description, latitude, longitude, companyId } = body;
 
-    await this.createLocationUseCase.execute({
+    const result = await this.createLocationUseCase.execute({
       description,
       latitude,
       longitude,
       companyId,
     });
+
+    if (result.isLeft()) {
+      throw new BadRequestException();
+    }
   }
 }

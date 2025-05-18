@@ -12,10 +12,12 @@ import { MeController } from "./controllers/me.controller";
 import { AuthenticateUserUseCase } from "@/domain/application/use-cases/authenticate-user";
 import { CreateLocationUseCase } from "@/domain/application/use-cases/create-location";
 import { EditLocationUseCase } from "@/domain/application/use-cases/edit-location";
+import { FetchDepartmentsUseCase } from "@/domain/application/use-cases/fetch-departments";
 import { FetchLocationsUseCase } from "@/domain/application/use-cases/fetch-locations";
 import { GetLocationUseCase } from "@/domain/application/use-cases/get-location";
 import { GetProfileUseCase } from "@/domain/application/use-cases/get-profile";
 import { RegisterUseCase } from "@/domain/application/use-cases/register";
+import { FetchDepartmentsController } from "./controllers/fetch-departments.controller";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -23,19 +25,35 @@ import { RegisterUseCase } from "@/domain/application/use-cases/register";
     AuthenticateController,
     CreateAccountController,
     MeController,
+
+    // Locations
     FetchLocationsController,
     GetLocationController,
     EditLocationController,
     CreateAccountController,
+
+    // Departments
+    FetchDepartmentsController,
+    // GetDepartmentController,
+    // EditDepartmentController,
+    // CreateDepartmentController,
   ],
   providers: [
     AuthenticateUserUseCase,
     RegisterUseCase,
     GetProfileUseCase,
+
+    // Locations
     FetchLocationsUseCase,
     EditLocationUseCase,
     GetLocationUseCase,
     CreateLocationUseCase,
+
+    // Departments
+    FetchDepartmentsUseCase,
+    // GetDepartmentUseCase,
+    // EditDepartmentUseCase,
+    // CreateDepartmentUseCase,
   ],
 })
 export class HttpModule {}

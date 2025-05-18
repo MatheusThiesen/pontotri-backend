@@ -1,4 +1,4 @@
-import { HolidayScope, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -19,18 +19,18 @@ export async function seedHolidays() {
   for (const holiday of RECURRING_HOLIDAYS) {
     const date = new Date(Date.UTC(2000, holiday.month - 1, holiday.day));
 
-    await prisma.holiday.upsert({
-      where: {
-        date,
-      },
-      update: {},
-      create: {
-        date,
-        name: holiday.name,
-        scope: HolidayScope.NATIONAL,
-        isRecurring: true,
-      },
-    });
+    // await prisma.holiday.upsert({
+    //   where: {
+    //     date,
+    //   },
+    //   update: {},
+    //   create: {
+    //     date,
+    //     name: holiday.name,
+    //     scope: HolidayScope.NATIONAL,
+    //     isRecurring: true,
+    //   },
+    // });
   }
 
   console.log("✅ Feriados recorrentes inseridos!");

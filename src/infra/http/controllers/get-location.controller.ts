@@ -18,7 +18,7 @@ export class GetLocationController {
     const result = await this.getLocationUseCase.execute({ locationId: id });
 
     if (result.isLeft()) {
-      throw new NotFoundException("Localização não encontrada.");
+      throw new NotFoundException();
     }
 
     return {
