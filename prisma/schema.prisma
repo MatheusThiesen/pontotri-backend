@@ -55,15 +55,29 @@ model Company {
   id        String   @id @default(uuid())
   name      String
   cnpj      String   @unique
-  latitude  Float?
-  longitude Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   users       User[]
   departments Department[]
+  locations   Location[]
+  holidays    Holiday[]
 
   @@map("companies")
+}
+
+model Location {
+  id          String   @id @default(uuid())
+  description String // Ex: "Matriz", "Filial SP", "Obra Zona Sul"
+  latitude    Float
+  longitude   Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String
+
+  @@map("locations")
 }
 
 model Department {
@@ -122,6 +136,38 @@ enum TimeRecordType {
   EXIT // Saída do trabalho
   BREAK_START // Início do intervalo
   BREAK_END // Fim do intervalo
+}
+
+model CalendarDay {
+  id        String   @id @default(uuid())
+  date      DateTime @unique
+  weekday   Weekday
+  createdAt DateTime @default(now())
+
+  @@map("calendar_days")
+}
+
+model Holiday {
+  id          String       @id @default(uuid())
+  date        DateTime
+  name        String // Ex: "Natal", "Independência"
+  scope       HolidayScope
+  state       String? // Ex: "SP"
+  city        String? // Ex: "São Paulo"
+  isRecurring Boolean      @default(false) // Se repete todo ano (ex: 25/12)
+  createdAt   DateTime     @default(now())
+
+  companyId String? // Se scope = COMPANY
+  company   Company? @relation(fields: [companyId], references: [id])
+
+  @@map("holidays")
+}
+
+enum HolidayScope {
+  NATIONAL
+  STATE
+  CITY
+  COMPANY
 }
 
 model TimeRecord {

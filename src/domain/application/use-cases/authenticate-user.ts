@@ -31,18 +31,16 @@ export class AuthenticateUserUseCase {
   }: AuthenticateUserUseCaseRequest): Promise<AuthenticateUserUseCaseResponse> {
     const user = await this.usersRepository.findByEmail(email);
 
-    if (!user) {
-      return left(new WrongCredentialsError());
-    }
+    if (!user) return left(new WrongCredentialsError());
+
+    if (user.isActive === false) return left(new WrongCredentialsError());
 
     const isPasswordValid = await this.hashComparer.compare(
       password,
       user.password
     );
 
-    if (!isPasswordValid) {
-      return left(new WrongCredentialsError());
-    }
+    if (!isPasswordValid) return left(new WrongCredentialsError());
 
     const accessToken = await this.encrypter.encrypt({
       sub: user.id.toString(),

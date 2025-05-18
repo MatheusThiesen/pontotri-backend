@@ -4,8 +4,6 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 export interface CompanyProps {
   name: string;
   cnpj: string;
-  latitude?: number;
-  longitude?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -17,14 +15,6 @@ export class Company extends Entity<CompanyProps> {
 
   get cnpj() {
     return this.props.cnpj;
-  }
-
-  get latitude() {
-    return this.props.latitude;
-  }
-
-  get longitude() {
-    return this.props.longitude;
   }
 
   get createdAt() {

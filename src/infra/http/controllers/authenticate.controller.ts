@@ -3,12 +3,12 @@ import { WrongCredentialsError } from "@/domain/application/use-cases/errors/wro
 import { Public } from "@/infra/auth/public";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import {
-    BadRequestException,
-    Body,
-    Controller,
-    Post,
-    UnauthorizedException,
-    UsePipes,
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  UsePipes,
 } from "@nestjs/common";
 import { z } from "zod";
 
@@ -19,7 +19,7 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>;
 
-@Controller("/sessions")
+@Controller("/auth/session")
 @Public()
 export class AuthenticateController {
   constructor(private authenticateUser: AuthenticateUserUseCase) {}

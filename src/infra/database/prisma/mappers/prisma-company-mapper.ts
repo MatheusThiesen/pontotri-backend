@@ -8,8 +8,6 @@ export class PrismaCompanyMapper {
       {
         name: raw.name,
         cnpj: raw.cnpj,
-        latitude: raw.latitude ?? undefined,
-        longitude: raw.longitude ?? undefined,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
@@ -22,8 +20,6 @@ export class PrismaCompanyMapper {
       id: company.id.toString(),
       name: company.name,
       cnpj: company.cnpj,
-      latitude: company.latitude ?? undefined,
-      longitude: company.longitude ?? undefined,
       createdAt: company.createdAt,
       updatedAt: company.updatedAt,
     };

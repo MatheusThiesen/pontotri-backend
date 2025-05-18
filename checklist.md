@@ -4,9 +4,37 @@
 
 ## 🔐 Autenticação
 
-- [ ] `POST /auth/login` — Login (ADMIN / MANAGER / EMPLOYEE)
-- [ ] `GET /auth/me` — Ver usuário autenticado (ADMIN / MANAGER / EMPLOYEE)
-- [ ] `POST /auth/refresh` — Refresh token (ADMIN / MANAGER / EMPLOYEE)
+- [x] `POST /accounts` — Criar empresa e usuário
+- [x] `POST /auth/session` — Login (ADMIN / MANAGER / EMPLOYEE)
+- [x] `GET /auth/me` — Ver usuário autenticado (ADMIN / MANAGER / EMPLOYEE) \*17/06
+- [ ] `POST /auth/refresh` — Refresh token (ADMIN / MANAGER / EMPLOYEE) \*17/06
+
+---
+
+## ⚙️ Perfil
+
+- [ ] `GET /profile` — Ver perfil pessoal (ADMIN / MANAGER / EMPLOYEE) \*17/06
+- [ ] `PUT /profile` — Atualizar perfil pessoal (ADMIN / MANAGER / EMPLOYEE) \*17/06
+- [ ] `PUT /change-password` — Alterar senha (ADMIN / MANAGER / EMPLOYEE) \*17/06
+
+---
+
+## 📍 Localizações
+
+- [ ] `GET /locations` — Listar jornadas (ADMIN / MANAGER) \*17/06
+- [ ] `POST /locations` — Criar jornada (ADMIN / MANAGER) \*17/06
+- [ ] `GET /locations/:id` — Ver jornada (ADMIN / MANAGER) \*17/06
+- [ ] `PUT /locations/:id` — Atualizar jornada (ADMIN / MANAGER) \*17/06
+- [ ] `DELETE /locations/:id` — Deletar jornada (ADMIN / MANAGER) \*17/06
+
+---
+
+## 🏬 Departamentos
+
+- [ ] `GET /departments` — Listar departamentos (ADMIN / MANAGER) \*17/06
+- [ ] `POST /departments` — Criar departamento (ADMIN / MANAGER) \*17/06
+- [ ] `PUT /departments/:id` — Atualizar departamento (ADMIN / MANAGER) \*17/06
+- [ ] `DELETE /departments/:id` — Deletar departamento (ADMIN / MANAGER) \*17/06
 
 ---
 
@@ -18,25 +46,6 @@
 - [ ] `PUT /users/:id` — Atualizar dados do usuário (ADMIN / MANAGER)
 - [ ] `DELETE /users/:id` — Desativar/Excluir usuário (ADMIN / MANAGER)
 - [ ] `GET /users/me/schedule` — Ver jornada de trabalho (EMPLOYEE)
-
----
-
-## 🏢 Empresas
-
-- [ ] `GET /companies` — Listar empresas (ADMIN)
-- [ ] `POST /companies` — Criar empresa (ADMIN)
-- [ ] `GET /companies/:id` — Ver dados da empresa (ADMIN)
-- [ ] `PUT /companies/:id` — Atualizar empresa (ADMIN)
-- [ ] `DELETE /companies/:id` — Deletar empresa (ADMIN)
-
----
-
-## 🏬 Departamentos
-
-- [ ] `GET /departments` — Listar departamentos (ADMIN / MANAGER)
-- [ ] `POST /departments` — Criar departamento (ADMIN / MANAGER)
-- [ ] `PUT /departments/:id` — Atualizar departamento (ADMIN / MANAGER)
-- [ ] `DELETE /departments/:id` — Deletar departamento (ADMIN / MANAGER)
 
 ---
 
@@ -61,14 +70,17 @@
 
 ---
 
+## 🏢 Empresas
+
+- [ ] `GET /companies` — Listar empresas (ADMIN)
+- [ ] `GET /companies/:id` — Ver dados da empresa (ADMIN)
+- [ ] `PUT /companies/:id` — Atualizar empresa (ADMIN)
+
+---
+
 ## 📊 Relatórios
 
 - [ ] `GET /reports/users` — Relatório geral de usuários (MANAGER / ADMIN)
 - [ ] `GET /reports/summary` — Relatório resumido da empresa (MANAGER / ADMIN)
 
 ---
-
-## ⚙️ Perfil
-
-- [ ] `GET /profile` — Ver perfil pessoal (ADMIN / MANAGER / EMPLOYEE)
-- [ ] `PUT /profile` — Atualizar perfil pessoal (ADMIN / MANAGER / EMPLOYEE)
