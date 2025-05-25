@@ -5,11 +5,13 @@ import { PrismaCompaniesRepository } from "./prisma/repositories/prisma-companie
 import { PrismaDepartmentsRepository } from "./prisma/repositories/prisma-departments-repository";
 import { PrismaLocationsRepository } from "./prisma/repositories/prisma-locations-repository";
 import { PrismaUsersRepository } from "./prisma/repositories/prisma-users-repository";
+import { PrismaWorkScheduleRepository } from "./prisma/repositories/prisma-work-schedule-repository";
 
 import { CompaniesRepository } from "@/domain/application/repositories/companies-repository";
 import { DepartmentsRepository } from "@/domain/application/repositories/departments-repository";
 import { LocationsRepository } from "@/domain/application/repositories/locations-repository";
 import { UsersRepository } from "@/domain/application/repositories/users-repository";
+import { WorkScheduleRepository } from "@/domain/application/repositories/work-schedule-repository";
 
 @Module({
   providers: [
@@ -30,6 +32,10 @@ import { UsersRepository } from "@/domain/application/repositories/users-reposit
       provide: DepartmentsRepository,
       useClass: PrismaDepartmentsRepository,
     },
+    {
+      provide: WorkScheduleRepository,
+      useClass: PrismaWorkScheduleRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -37,6 +43,7 @@ import { UsersRepository } from "@/domain/application/repositories/users-reposit
     CompaniesRepository,
     LocationsRepository,
     DepartmentsRepository,
+    WorkScheduleRepository,
   ],
 })
 export class DatabaseModule {}

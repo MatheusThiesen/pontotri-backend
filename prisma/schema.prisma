@@ -58,10 +58,11 @@ model Company {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users       User[]
-  departments Department[]
-  locations   Location[]
-  holidays    Holiday[]
+  users         User[]
+  departments   Department[]
+  locations     Location[]
+  holidays      Holiday[]
+  workSchedules WorkSchedule[]
 
   @@map("companies")
 }
@@ -83,12 +84,12 @@ model Location {
 model Department {
   id        String   @id @default(uuid())
   name      String
-  company   Company  @relation(fields: [companyId], references: [id])
-  companyId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users User[]
+  users     User[]
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String
 
   @@map("departments")
 }
@@ -102,20 +103,29 @@ model WorkSchedule {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users User[]
+  users     User[]
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String
 
   @@map("work_schedules")
 }
 
+enum BreakType {
+  NONE
+  FIXED
+  FLEXIBLE
+}
+
 model WorkScheduleDay {
-  id               String  @id @default(uuid())
+  id               String    @id @default(uuid())
   weekday          Weekday
   startTime        String // "08:00"
   endTime          String // "18:00"
-  breakStartWindow String // "12:00"
-  breakEndWindow   String // "13:30"
-  breakDuration    Int // minutos => 90
   totalWorkMinutes Int // minutos => 510
+  breakType        BreakType @default(NONE)
+  breakStartWindow String? // "12:00"
+  breakEndWindow   String? // "13:30"
+  breakDuration    Int? // minutos => 90
 
   workSchedule   WorkSchedule @relation(fields: [workScheduleId], references: [id])
   workScheduleId String
