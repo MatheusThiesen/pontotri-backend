@@ -1,8 +1,8 @@
 import { Either, left, right } from "@/core/either";
 import { User } from "@/domain/entities/user";
 import { Injectable } from "@nestjs/common";
-import { UsersRepository } from "../repositories/users-repository";
-import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { UsersRepository } from "../../repositories/users-repository";
+import { WrongCredentialsError } from "../errors/wrong-credentials-error";
 
 interface GetProfileUseCaseRequest {
   userId: string;

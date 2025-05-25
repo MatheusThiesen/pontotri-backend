@@ -1,5 +1,4 @@
-import { WorkScheduleRepository } from "@/domain/application/repositories/work-schedule-repository";
-import { EditWorkScheduleUseCase } from "@/domain/application/use-cases/edit-work-schedule";
+import { EditWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/edit-work-schedule";
 import {
   Body,
   Controller,
@@ -38,10 +37,7 @@ type EditWorkScheduleBodySchema = z.infer<typeof editWorkScheduleBodySchema>;
 
 @Controller("/work-schedules")
 export class EditWorkScheduleController {
-  constructor(
-    private editWorkSchedule: EditWorkScheduleUseCase,
-    private workScheduleRepository: WorkScheduleRepository
-  ) {}
+  constructor(private editWorkSchedule: EditWorkScheduleUseCase) {}
 
   @Put(":id")
   async handle(

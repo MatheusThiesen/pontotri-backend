@@ -1,5 +1,5 @@
 import { WorkScheduleRepository } from "@/domain/application/repositories/work-schedule-repository";
-import { GetWorkScheduleUseCase } from "@/domain/application/use-cases/get-work-schedule";
+import { GetWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/get-work-schedule";
 import {
   Controller,
   Get,

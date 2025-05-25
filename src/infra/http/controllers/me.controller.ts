@@ -1,5 +1,5 @@
 import { WrongCredentialsError } from "@/domain/application/use-cases/errors/wrong-credentials-error";
-import { GetProfileUseCase } from "@/domain/application/use-cases/get-profile";
+import { GetProfileUseCase } from "@/domain/application/use-cases/user/get-profile";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { UserPayload } from "@/infra/auth/jwt.strategy";
 import {

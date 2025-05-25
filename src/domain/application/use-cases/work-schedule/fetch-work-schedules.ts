@@ -2,7 +2,7 @@ import { Either, right } from "@/core/either";
 import { PaginationParams } from "@/core/repositories/pagination-params";
 import { WorkSchedule } from "@/domain/entities/work-schedule";
 import { Injectable } from "@nestjs/common";
-import { WorkScheduleRepository } from "../repositories/work-schedule-repository";
+import { WorkScheduleRepository } from "../../repositories/work-schedule-repository";
 
 interface FetchWorkSchedulesUseCaseRequest extends PaginationParams {
   companyId: string;

@@ -2,7 +2,7 @@ import { Either, right } from "@/core/either";
 import { PaginationParams } from "@/core/repositories/pagination-params";
 import { Location } from "@/domain/entities/location";
 import { Injectable } from "@nestjs/common";
-import { LocationsRepository } from "../repositories/locations-repository";
+import { LocationsRepository } from "../../repositories/locations-repository";
 
 interface FetchLocationsUseCaseRequest extends PaginationParams {
   companyId: string;

@@ -1,4 +1,4 @@
-import { CreateWorkScheduleUseCase } from "@/domain/application/use-cases/create-work-schedule";
+import { CreateWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/create-work-schedule";
 import {
   BadRequestException,
   Body,

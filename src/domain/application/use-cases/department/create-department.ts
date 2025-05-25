@@ -1,7 +1,7 @@
 import { Either, right } from "@/core/either";
-import { DepartmentsRepository } from "@/domain/application/repositories/departments-repository";
 import { Department } from "@/domain/entities/department";
 import { Injectable } from "@nestjs/common";
+import { DepartmentsRepository } from "../../repositories/departments-repository";
 
 interface CreateDepartmentUseCaseRequest {
   name: string;
@@ -17,16 +17,21 @@ type CreateDepartmentUseCaseResponse = Either<
 
 @Injectable()
 export class CreateDepartmentUseCase {
-  constructor(private departmentsRepository: DepartmentsRepository) {}
+  constructor(private departmentRepository: DepartmentsRepository) {}
 
   async execute({
     name,
     companyId,
   }: CreateDepartmentUseCaseRequest): Promise<CreateDepartmentUseCaseResponse> {
-    const department = Department.create({ name, companyId });
+    const department = Department.create({
+      name,
+      companyId,
+    });
 
-    await this.departmentsRepository.create(department);
+    await this.departmentRepository.create(department);
 
-    return right({ department });
+    return right({
+      department,
+    });
   }
 }

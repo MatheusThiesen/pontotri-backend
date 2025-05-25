@@ -1,9 +1,9 @@
 import { Either, left, right } from "@/core/either";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { WorkSchedule } from "@/domain/entities/work-schedule";
 import { WorkScheduleDay } from "@/domain/entities/work-schedule-day";
 import { Injectable } from "@nestjs/common";
-import { WorkScheduleRepository } from "../repositories/work-schedule-repository";
+import { WorkScheduleRepository } from "../../repositories/work-schedule-repository";
 
 interface EditWorkScheduleUseCaseRequest {
   id: string;

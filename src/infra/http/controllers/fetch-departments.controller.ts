@@ -1,4 +1,4 @@
-import { FetchDepartmentsUseCase } from "@/domain/application/use-cases/fetch-departments";
+import { FetchDepartmentsUseCase } from "@/domain/application/use-cases/department/fetch-departments";
 import { BadRequestException, Controller, Get, Query } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";

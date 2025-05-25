@@ -1,13 +1,11 @@
-// domain/entities/department.ts
-
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 
 export interface DepartmentProps {
   name: string;
   companyId: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class Department extends Entity<DepartmentProps> {
@@ -15,8 +13,8 @@ export class Department extends Entity<DepartmentProps> {
     return this.props.name;
   }
 
-  set name(value: string) {
-    this.props.name = value;
+  set name(name: string) {
+    this.props.name = name;
     this.touch();
   }
 
@@ -25,25 +23,30 @@ export class Department extends Entity<DepartmentProps> {
   }
 
   get createdAt() {
-    return this.props.createdAt!;
+    return this.props.createdAt;
   }
 
   get updatedAt() {
-    return this.props.updatedAt!;
+    return this.props.updatedAt;
   }
 
   private touch() {
     this.props.updatedAt = new Date();
   }
 
-  static create(props: DepartmentProps, id?: UniqueEntityID) {
-    return new Department(
+  static create(
+    props: Omit<DepartmentProps, "createdAt" | "updatedAt">,
+    id?: string
+  ) {
+    const department = new Department(
       {
         ...props,
-        createdAt: props.createdAt ?? new Date(),
-        updatedAt: props.updatedAt ?? new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
-      id
+      id ? new UniqueEntityID(id) : undefined
     );
+
+    return department;
   }
 }

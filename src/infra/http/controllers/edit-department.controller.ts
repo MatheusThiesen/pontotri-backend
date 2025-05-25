@@ -3,41 +3,44 @@ import {
   BadRequestException,
   Body,
   Controller,
-  HttpCode,
+  NotFoundException,
   Param,
-  Patch,
-  UsePipes,
+  Put,
 } from "@nestjs/common";
 import { z } from "zod";
-import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 
 const editDepartmentBodySchema = z.object({
   name: z.string(),
+  description: z.string(),
 });
 
 type EditDepartmentBodySchema = z.infer<typeof editDepartmentBodySchema>;
 
 @Controller("/departments")
 export class EditDepartmentController {
-  constructor(private editDepartmentUseCase: EditDepartmentUseCase) {}
+  constructor(private editDepartment: EditDepartmentUseCase) {}
 
-  @Patch(":id")
-  @HttpCode(204)
-  @UsePipes(new ZodValidationPipe(editDepartmentBodySchema))
+  @Put(":id")
   async handle(
     @Param("id") id: string,
     @Body() body: EditDepartmentBodySchema
   ) {
-    const { name } = body;
+    try {
+      const { name } = body;
 
-    const result = await this.editDepartmentUseCase.execute({
-      departmentId: id,
-      name,
-      id,
-    });
+      const result = await this.editDepartment.execute({
+        id,
+        departmentId: id,
+        name,
+      });
 
-    if (result.isLeft()) {
-      throw new BadRequestException();
+      if (result.isLeft()) {
+        throw new BadRequestException();
+      }
+
+      return result;
+    } catch (error) {
+      throw new NotFoundException();
     }
   }
 }

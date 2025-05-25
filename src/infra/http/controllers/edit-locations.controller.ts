@@ -1,4 +1,4 @@
-import { EditLocationUseCase } from "@/domain/application/use-cases/edit-location";
+import { EditLocationUseCase } from "@/domain/application/use-cases/location/edit-location";
 import {
   BadRequestException,
   Body,

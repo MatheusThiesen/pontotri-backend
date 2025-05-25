@@ -1,4 +1,4 @@
-import { FetchLocationsUseCase } from "@/domain/application/use-cases/fetch-locations";
+import { FetchLocationsUseCase } from "@/domain/application/use-cases/location/fetch-locations";
 import {
   BadRequestException,
   Controller,

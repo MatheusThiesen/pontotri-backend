@@ -1,5 +1,5 @@
-import { AuthenticateUserUseCase } from "@/domain/application/use-cases/authenticate-user";
 import { WrongCredentialsError } from "@/domain/application/use-cases/errors/wrong-credentials-error";
+import { AuthenticateUserUseCase } from "@/domain/application/use-cases/user/authenticate-user";
 import { Public } from "@/infra/auth/public";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import {

@@ -1,4 +1,4 @@
-import { FetchWorkSchedulesUseCase } from "@/domain/application/use-cases/fetch-work-schedules";
+import { FetchWorkSchedulesUseCase } from "@/domain/application/use-cases/work-schedule/fetch-work-schedules";
 import {
   BadRequestException,
   Controller,

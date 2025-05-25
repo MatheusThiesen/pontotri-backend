@@ -1,4 +1,4 @@
-import { CreateLocationUseCase } from "@/domain/application/use-cases/create-location";
+import { CreateLocationUseCase } from "@/domain/application/use-cases/location/create-location";
 import {
   BadRequestException,
   Body,

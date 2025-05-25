@@ -1,7 +1,7 @@
 import { Either, left, right } from "@/core/either";
 import { Location } from "@/domain/entities/location";
 import { Injectable } from "@nestjs/common";
-import { LocationsRepository } from "../repositories/locations-repository";
+import { LocationsRepository } from "../../repositories/locations-repository";
 
 interface SaveLocationUseCaseRequest {
   id: string;
