@@ -1,4 +1,3 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { User } from "@/domain/entities/user";
 import { Prisma, User as PrismaUser } from "@prisma/client";
 
@@ -11,13 +10,12 @@ export class PrismaUserMapper {
         password: raw.password,
         role: raw.role,
         isActive: raw.isActive,
-        createdAt: raw.createdAt,
-        updatedAt: raw.updatedAt,
         companyId: raw.companyId ?? undefined,
         departmentId: raw.departmentId ?? undefined,
         workScheduleId: raw.workScheduleId ?? undefined,
+        profileImage: raw.profileImage ?? undefined,
       },
-      new UniqueEntityID(raw.id)
+      raw.id
     );
   }
 
@@ -29,11 +27,10 @@ export class PrismaUserMapper {
       password: user.password,
       role: user.role,
       isActive: user.isActive,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
       companyId: user.companyId,
       departmentId: user.departmentId,
       workScheduleId: user.workScheduleId,
+      profileImage: user.profileImage,
     };
   }
 }

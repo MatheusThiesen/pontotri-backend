@@ -59,6 +59,7 @@ export class RegisterUseCase {
       password: hashedPassword,
       companyId: company.id.toValue(),
       role: "OWNER",
+      isActive: true,
     });
     await this.usersRepository.create(user);
 
