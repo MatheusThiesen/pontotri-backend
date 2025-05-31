@@ -13,9 +13,11 @@ import { GetWorkScheduleController } from "./controllers/get-work-schedule.contr
 import { MeController } from "./controllers/me.controller";
 
 import { CreateDepartmentUseCase } from "@/domain/application/use-cases/department/create-department";
+import { DeleteDepartmentUseCase } from "@/domain/application/use-cases/department/delete-department";
 import { EditDepartmentUseCase } from "@/domain/application/use-cases/department/edit-department";
 import { FetchDepartmentsUseCase } from "@/domain/application/use-cases/department/fetch-departments";
 import { CreateLocationUseCase } from "@/domain/application/use-cases/location/create-location";
+import { DeleteLocationUseCase } from "@/domain/application/use-cases/location/delete-location";
 import { EditLocationUseCase } from "@/domain/application/use-cases/location/edit-location";
 import { FetchLocationsUseCase } from "@/domain/application/use-cases/location/fetch-locations";
 import { RegisterUseCase } from "@/domain/application/use-cases/register";
@@ -26,7 +28,10 @@ import { EditWorkScheduleUseCase } from "@/domain/application/use-cases/work-sch
 import { FetchWorkSchedulesUseCase } from "@/domain/application/use-cases/work-schedule/fetch-work-schedules";
 import { GetWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/get-work-schedule";
 import { CreateDepartmentController } from "./controllers/create-department.controller";
-import { EditDepartmentController } from "./controllers/edit-departments.controller";
+import { CreateLocationController } from "./controllers/create-location.controller";
+import { DeleteDepartmentController } from "./controllers/delete-department.controller";
+import { DeleteLocationController } from "./controllers/delete-location.controller";
+import { EditDepartmentController } from "./controllers/edit-department.controller";
 import { FetchDepartmentsController } from "./controllers/fetch-departments.controller";
 
 @Module({
@@ -39,12 +44,14 @@ import { FetchDepartmentsController } from "./controllers/fetch-departments.cont
     // Locations
     FetchLocationsController,
     EditLocationController,
-    CreateAccountController,
+    CreateLocationController,
+    DeleteLocationController,
 
     // Departments
     FetchDepartmentsController,
     CreateDepartmentController,
     EditDepartmentController,
+    DeleteDepartmentController,
 
     // WorkSchedules
     CreateWorkScheduleController,
@@ -61,11 +68,13 @@ import { FetchDepartmentsController } from "./controllers/fetch-departments.cont
     FetchLocationsUseCase,
     EditLocationUseCase,
     CreateLocationUseCase,
+    DeleteLocationUseCase,
 
     // Departments
     FetchDepartmentsUseCase,
     CreateDepartmentUseCase,
     EditDepartmentUseCase,
+    DeleteDepartmentUseCase,
 
     // WorkSchedules
     CreateWorkScheduleUseCase,

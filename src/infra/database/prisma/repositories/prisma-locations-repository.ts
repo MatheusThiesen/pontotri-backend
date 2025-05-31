@@ -16,6 +16,7 @@ export class PrismaLocationsRepository implements LocationsRepository {
 
   async save(location: Location): Promise<void> {
     const data = PrismaLocationMapper.toPrisma(location);
+
     await this.prisma.location.update({
       where: { id: location.id.toString() },
       data,
@@ -48,14 +49,8 @@ export class PrismaLocationsRepository implements LocationsRepository {
     return PrismaLocationMapper.toDomain(location);
   }
 
-  async findManyByCompanyId(
-    companyId: string,
-    { page, pagesize }: PaginationParams
-  ): Promise<Location[]> {
+  async findMany({ page, pagesize }: PaginationParams): Promise<Location[]> {
     const locations = await this.prisma.location.findMany({
-      where: {
-        companyId,
-      },
       orderBy: {
         createdAt: "desc",
       },
@@ -64,5 +59,16 @@ export class PrismaLocationsRepository implements LocationsRepository {
     });
 
     return locations.map(PrismaLocationMapper.toDomain);
+  }
+
+  async count(): Promise<number> {
+    const total = await this.prisma.location.count({});
+    return total;
+  }
+
+  async delete(location: Location): Promise<void> {
+    await this.prisma.location.delete({
+      where: { id: location.id.toString() },
+    });
   }
 }

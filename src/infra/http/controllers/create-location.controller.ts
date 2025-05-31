@@ -9,6 +9,7 @@ import {
 } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { LocationPresenter } from "../presenters/location-presenter";
 
 const createLocationBodySchema = z.object({
   description: z.string(),
@@ -41,5 +42,7 @@ export class CreateLocationController {
     if (result.isLeft()) {
       throw new BadRequestException();
     }
+
+    return LocationPresenter.toHTTP(result.value.location);
   }
 }

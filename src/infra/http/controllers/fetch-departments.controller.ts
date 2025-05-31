@@ -1,10 +1,12 @@
 import { FetchDepartmentsUseCase } from "@/domain/application/use-cases/department/fetch-departments";
+import { CurrentUser } from "@/infra/auth/current-user-decorator";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
 import { BadRequestException, Controller, Get, Query } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { DepartmentPresenter } from "../presenters/department-presenter";
 
 const fetchLocationsQuerySchema = z.object({
-  companyId: z.string().uuid(),
   page: z.coerce.number().min(1).default(1),
   pagesize: z.coerce.number().min(1).max(100).default(10),
 });
@@ -17,12 +19,14 @@ export class FetchDepartmentsController {
 
   @Get()
   async handle(
+    @CurrentUser() user: UserPayload,
     @Query(new ZodValidationPipe(fetchLocationsQuerySchema))
     query: FetchLocationsQuery
   ) {
-    const { companyId, page, pagesize } = query;
+    const { page, pagesize } = query;
+
     const result = await this.fetchDepartmentsUseCase.execute({
-      companyId,
+      userId: user.sub,
       page,
       pagesize,
     });
@@ -31,6 +35,12 @@ export class FetchDepartmentsController {
       throw new BadRequestException();
     }
 
-    return result.value.departments;
+    const departments = result.value.departments;
+    const pagination = result.value.pagination;
+
+    return {
+      ...pagination,
+      data: departments.map(DepartmentPresenter.toHTTP),
+    };
   }
 }

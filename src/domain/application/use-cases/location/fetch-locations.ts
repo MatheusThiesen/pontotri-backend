@@ -5,25 +5,47 @@ import { Injectable } from "@nestjs/common";
 import { LocationsRepository } from "../../repositories/locations-repository";
 
 interface FetchLocationsUseCaseRequest extends PaginationParams {
-  companyId: string;
+  userId: string;
+  page: number;
+  pagesize: number;
 }
 
-type FetchLocationsUseCaseResponse = Either<null, { locations: Location[] }>;
+type FetchLocationsUseCaseResponse = Either<
+  null,
+  {
+    locations: Location[];
+    pagination: {
+      page: number;
+      pagesize: number;
+      total: number;
+    };
+  }
+>;
 
 @Injectable()
 export class FetchLocationsUseCase {
   constructor(private locationsRepository: LocationsRepository) {}
 
   async execute({
-    companyId,
+    userId,
     page,
     pagesize,
   }: FetchLocationsUseCaseRequest): Promise<FetchLocationsUseCaseResponse> {
-    const locations = await this.locationsRepository.findManyByCompanyId(
-      companyId,
-      { page, pagesize }
-    );
+    const [locations, total] = await Promise.all([
+      this.locationsRepository.findMany({
+        page,
+        pagesize,
+      }),
+      this.locationsRepository.count(),
+    ]);
 
-    return right({ locations });
+    return right({
+      locations,
+      pagination: {
+        total,
+        page,
+        pagesize,
+      },
+    });
   }
 }

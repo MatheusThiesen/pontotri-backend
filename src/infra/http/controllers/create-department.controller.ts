@@ -10,10 +10,10 @@ import {
 } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { DepartmentPresenter } from "../presenters/department-presenter";
 
 const createDepartmentBodySchema = z.object({
   name: z.string(),
-  description: z.string(),
   companyId: z.string().uuid(),
 });
 
@@ -32,7 +32,6 @@ export class CreateDepartmentController {
 
     const result = await this.createDepartment.execute({
       name,
-
       companyId,
     });
 
@@ -40,6 +39,8 @@ export class CreateDepartmentController {
       throw new BadRequestException();
     }
 
-    return result;
+    const department = result.value.department;
+
+    return DepartmentPresenter.toHTTP(department);
   }
 }

@@ -8,10 +8,10 @@ import {
   Put,
 } from "@nestjs/common";
 import { z } from "zod";
+import { DepartmentPresenter } from "../presenters/department-presenter";
 
 const editDepartmentBodySchema = z.object({
   name: z.string(),
-  description: z.string(),
 });
 
 type EditDepartmentBodySchema = z.infer<typeof editDepartmentBodySchema>;
@@ -38,7 +38,9 @@ export class EditDepartmentController {
         throw new BadRequestException();
       }
 
-      return result;
+      const department = result.value.department;
+
+      return DepartmentPresenter.toHTTP(department);
     } catch (error) {
       throw new NotFoundException();
     }

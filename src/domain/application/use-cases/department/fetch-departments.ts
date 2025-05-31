@@ -4,7 +4,7 @@ import { Department } from "@/domain/entities/department";
 import { Injectable } from "@nestjs/common";
 
 interface FetchDepartmentsUseCaseRequest {
-  companyId: string;
+  userId: string;
   page: number;
   pagesize: number;
 }
@@ -13,6 +13,11 @@ type FetchDepartmentsUseCaseResponse = Either<
   null,
   {
     departments: Department[];
+    pagination: {
+      page: number;
+      pagesize: number;
+      total: number;
+    };
   }
 >;
 
@@ -21,18 +26,24 @@ export class FetchDepartmentsUseCase {
   constructor(private departmentRepository: DepartmentsRepository) {}
 
   async execute({
-    companyId,
+    userId,
     page,
     pagesize,
   }: FetchDepartmentsUseCaseRequest): Promise<FetchDepartmentsUseCaseResponse> {
-    const departments = await this.departmentRepository.findManyByCompanyId(
-      companyId,
-      page,
-      pagesize
-    );
+    console.log(userId);
+
+    const [departments, total] = await Promise.all([
+      this.departmentRepository.findMany({ page, pagesize }),
+      this.departmentRepository.count(),
+    ]);
 
     return right({
       departments,
+      pagination: {
+        total,
+        page,
+        pagesize,
+      },
     });
   }
 }

@@ -24,6 +24,7 @@ export class GetProfileUseCase {
     }
 
     return right({
+      id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,

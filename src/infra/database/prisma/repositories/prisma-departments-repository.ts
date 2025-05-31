@@ -1,3 +1,4 @@
+import { PaginationParams } from "@/core/repositories/pagination-params";
 import { DepartmentsRepository } from "@/domain/application/repositories/departments-repository";
 import { Department } from "@/domain/entities/department";
 import { Injectable } from "@nestjs/common";
@@ -10,36 +11,55 @@ export class PrismaDepartmentsRepository implements DepartmentsRepository {
 
   async create(department: Department): Promise<void> {
     const data = PrismaDepartmentMapper.toPrisma(department);
-    await this.prisma.department.create({ data });
-  }
 
-  async save(department: Department): Promise<void> {
-    const data = PrismaDepartmentMapper.toPrisma(department);
-    await this.prisma.department.update({
-      where: { id: department.id.toString() },
+    await this.prisma.department.create({
       data,
     });
   }
 
   async findById(id: string): Promise<Department | null> {
     const department = await this.prisma.department.findUnique({
-      where: { id },
+      where: {
+        id,
+      },
     });
-    if (!department) return null;
+
+    if (!department) {
+      return null;
+    }
+
     return PrismaDepartmentMapper.toDomain(department);
   }
 
-  async findManyByCompanyId(
-    companyId: string,
-    page: number,
-    pageSize: number
-  ): Promise<Department[]> {
+  async save(department: Department): Promise<void> {
+    const data = PrismaDepartmentMapper.toPrisma(department);
+
+    await this.prisma.department.update({
+      where: {
+        id: department.id.toString(),
+      },
+      data,
+    });
+  }
+
+  async findMany({ page, pagesize }: PaginationParams): Promise<Department[]> {
     const departments = await this.prisma.department.findMany({
-      where: { companyId },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      take: pagesize,
+      skip: (page - 1) * pagesize,
     });
 
     return departments.map(PrismaDepartmentMapper.toDomain);
+  }
+
+  async count(): Promise<number> {
+    const total = await this.prisma.department.count({});
+
+    return total;
+  }
+
+  async delete(department: Department): Promise<void> {
+    await this.prisma.department.delete({
+      where: { id: department.id.toString() },
+    });
   }
 }
