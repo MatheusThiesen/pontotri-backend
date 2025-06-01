@@ -1,0 +1,23 @@
+import { WorkSchedule } from "@/domain/entities/work-schedule";
+
+export class WorkSchedulePresenter {
+  static toHTTP(workSchedule: WorkSchedule) {
+    return {
+      id: workSchedule.id.toValue(),
+      name: workSchedule.name,
+      companyId: workSchedule.companyId,
+      updatedAt: workSchedule.updatedAt,
+      days: workSchedule.days.map((day) => ({
+        id: day.id.toValue(),
+        weekday: day.weekday,
+        startTime: day.startTime,
+        endTime: day.endTime,
+        totalWorkMinutes: day.totalWorkMinutes,
+        breakType: day.breakType,
+        breakStartWindow: day.breakStartWindow,
+        breakEndWindow: day.breakEndWindow,
+        breakDuration: day.breakDuration,
+      })),
+    };
+  }
+}

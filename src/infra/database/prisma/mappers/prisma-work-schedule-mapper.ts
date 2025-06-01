@@ -16,17 +16,20 @@ export class PrismaWorkScheduleMapper {
         name: raw.name,
         companyId: raw.companyId,
         days: raw.days.map((day) =>
-          WorkScheduleDay.create({
-            weekday: day.weekday,
-            startTime: day.startTime,
-            endTime: day.endTime,
-            totalWorkMinutes: day.totalWorkMinutes,
-            breakType: day.breakType,
-            breakStartWindow: day.breakStartWindow ?? undefined,
-            breakEndWindow: day.breakEndWindow ?? undefined,
-            breakDuration: day.breakDuration ?? undefined,
-            workScheduleId: day.workScheduleId,
-          })
+          WorkScheduleDay.create(
+            {
+              weekday: day.weekday,
+              startTime: day.startTime,
+              endTime: day.endTime,
+              totalWorkMinutes: day.totalWorkMinutes,
+              breakType: day.breakType,
+              breakStartWindow: day.breakStartWindow ?? undefined,
+              breakEndWindow: day.breakEndWindow ?? undefined,
+              breakDuration: day.breakDuration ?? undefined,
+              workScheduleId: day.workScheduleId,
+            },
+            new UniqueEntityID(day.id)
+          )
         ),
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
@@ -53,6 +56,15 @@ export class PrismaWorkScheduleMapper {
           breakDuration: day.breakDuration ?? null,
         })),
       },
+    };
+  }
+
+  static toPrismaSave(
+    workSchedule: WorkSchedule
+  ): Prisma.WorkScheduleUncheckedUpdateInput {
+    return {
+      name: workSchedule.name,
+      companyId: workSchedule.companyId,
     };
   }
 }

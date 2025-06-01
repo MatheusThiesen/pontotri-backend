@@ -10,7 +10,14 @@ interface FetchWorkSchedulesUseCaseRequest extends PaginationParams {
 
 type FetchWorkSchedulesUseCaseResponse = Either<
   null,
-  { workSchedules: WorkSchedule[] }
+  {
+    workSchedules: WorkSchedule[];
+    pagination: {
+      total: number;
+      page: number;
+      pagesize: number;
+    };
+  }
 >;
 
 @Injectable()
@@ -22,9 +29,18 @@ export class FetchWorkSchedulesUseCase {
     page,
     pagesize,
   }: FetchWorkSchedulesUseCaseRequest): Promise<FetchWorkSchedulesUseCaseResponse> {
-    const workSchedules =
-      await this.workScheduleRepository.findByCompanyId(companyId);
+    const [workSchedules, total] = await Promise.all([
+      this.workScheduleRepository.findByCompanyId(companyId),
+      this.workScheduleRepository.countByCompanyId(companyId),
+    ]);
 
-    return right({ workSchedules });
+    return right({
+      workSchedules,
+      pagination: {
+        total,
+        page,
+        pagesize,
+      },
+    });
   }
 }

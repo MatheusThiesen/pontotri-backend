@@ -1,4 +1,5 @@
 import { Either, left, right } from "@/core/either";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 import { WorkSchedule } from "@/domain/entities/work-schedule";
 import { WorkScheduleDay } from "@/domain/entities/work-schedule-day";
@@ -9,6 +10,7 @@ interface EditWorkScheduleUseCaseRequest {
   id: string;
   name?: string;
   days?: {
+    id?: string;
     weekday: string;
     startTime: string;
     endTime: string;
@@ -22,7 +24,7 @@ interface EditWorkScheduleUseCaseRequest {
 
 type EditWorkScheduleUseCaseResponse = Either<
   ResourceNotFoundError,
-  { workSchedule: WorkSchedule }
+  WorkSchedule
 >;
 
 @Injectable()
@@ -46,22 +48,25 @@ export class EditWorkScheduleUseCase {
 
     if (days) {
       workSchedule.days = days.map((day) =>
-        WorkScheduleDay.create({
-          weekday: day.weekday as any,
-          startTime: day.startTime,
-          endTime: day.endTime,
-          totalWorkMinutes: day.totalWorkMinutes,
-          breakType: day.breakType as any,
-          breakStartWindow: day.breakStartWindow,
-          breakEndWindow: day.breakEndWindow,
-          breakDuration: day.breakDuration,
-          workScheduleId: id,
-        })
+        WorkScheduleDay.create(
+          {
+            weekday: day.weekday as any,
+            startTime: day.startTime,
+            endTime: day.endTime,
+            totalWorkMinutes: day.totalWorkMinutes,
+            breakType: day.breakType as any,
+            breakStartWindow: day.breakStartWindow,
+            breakEndWindow: day.breakEndWindow,
+            breakDuration: day.breakDuration,
+            workScheduleId: id,
+          },
+          new UniqueEntityID(day.id)
+        )
       );
     }
 
-    await this.workScheduleRepository.save(workSchedule);
+    const updated = await this.workScheduleRepository.save(workSchedule);
 
-    return right({ workSchedule });
+    return right(updated);
   }
 }

@@ -1,4 +1,3 @@
-import { WorkScheduleRepository } from "@/domain/application/repositories/work-schedule-repository";
 import { GetWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/get-work-schedule";
 import {
   Controller,
@@ -8,13 +7,11 @@ import {
   NotFoundException,
   Param,
 } from "@nestjs/common";
+import { WorkSchedulePresenter } from "../presenters/work-schedule-presenter";
 
 @Controller("/work-schedules")
 export class GetWorkScheduleController {
-  constructor(
-    private getWorkSchedule: GetWorkScheduleUseCase,
-    private workScheduleRepository: WorkScheduleRepository
-  ) {}
+  constructor(private getWorkSchedule: GetWorkScheduleUseCase) {}
 
   @Get(":id")
   @HttpCode(HttpStatus.OK)
@@ -27,8 +24,6 @@ export class GetWorkScheduleController {
       throw new NotFoundException();
     }
 
-    return {
-      workSchedule: result.value.workSchedule,
-    };
+    return WorkSchedulePresenter.toHTTP(result.value.workSchedule);
   }
 }

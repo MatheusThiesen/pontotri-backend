@@ -20,6 +20,7 @@ export abstract class WorkScheduleRepository {
   abstract create(workSchedule: WorkSchedule): Promise<void>;
   abstract findById(id: string): Promise<WorkSchedule | null>;
   abstract findByCompanyId(companyId: string): Promise<WorkSchedule[]>;
-  abstract save(workSchedule: WorkSchedule): Promise<void>;
+  abstract countByCompanyId(companyId: string): Promise<number>;
+  abstract save(workSchedule: WorkSchedule): Promise<WorkSchedule>;
   abstract delete(id: string): Promise<void>;
 }

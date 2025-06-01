@@ -8,11 +8,13 @@ import {
 } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { WorkSchedulePresenter } from "../presenters/work-schedule-presenter";
 
 const editWorkScheduleBodySchema = z.object({
   name: z.string(),
   days: z.array(
     z.object({
+      id: z.string().optional(),
       weekday: z.enum([
         "MONDAY",
         "TUESDAY",
@@ -57,8 +59,6 @@ export class EditWorkScheduleController {
       throw new NotFoundException();
     }
 
-    return {
-      workSchedule: result.value.workSchedule,
-    };
+    return WorkSchedulePresenter.toHTTP(result.value);
   }
 }
