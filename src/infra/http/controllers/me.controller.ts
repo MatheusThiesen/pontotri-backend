@@ -1,5 +1,5 @@
 import { WrongCredentialsError } from "@/domain/application/use-cases/errors/wrong-credentials-error";
-import { GetProfileUseCase } from "@/domain/application/use-cases/user/get-profile";
+import { GetUserUseCase } from "@/domain/application/use-cases/user/get-user";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { UserPayload } from "@/infra/auth/jwt.strategy";
 import {
@@ -9,10 +9,11 @@ import {
   HttpCode,
   UnauthorizedException,
 } from "@nestjs/common";
+import { UserPresenter } from "../presenters/user-presenter";
 
 @Controller("/auth/me")
 export class MeController {
-  constructor(private getProfile: GetProfileUseCase) {}
+  constructor(private getProfile: GetUserUseCase) {}
 
   @Get()
   @HttpCode(200)
@@ -32,6 +33,6 @@ export class MeController {
       }
     }
 
-    return result.value;
+    return UserPresenter.toHTTP(result.value);
   }
 }

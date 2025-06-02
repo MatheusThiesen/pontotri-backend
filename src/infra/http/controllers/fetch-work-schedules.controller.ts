@@ -1,4 +1,4 @@
-import { GetProfileUseCase } from "@/domain/application/use-cases/user/get-profile";
+import { GetUserUseCase } from "@/domain/application/use-cases/user/get-user";
 import { FetchWorkSchedulesUseCase } from "@/domain/application/use-cases/work-schedule/fetch-work-schedules";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { UserPayload } from "@/infra/auth/jwt.strategy";
@@ -25,7 +25,7 @@ type FetchWorkSchedulesQuery = z.infer<typeof fetchWorkSchedulesQuerySchema>;
 export class FetchWorkSchedulesController {
   constructor(
     private fetchWorkSchedulesUseCase: FetchWorkSchedulesUseCase,
-    private getProfile: GetProfileUseCase
+    private getProfile: GetUserUseCase
   ) {}
 
   @Get()

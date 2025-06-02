@@ -4,34 +4,25 @@ import { Injectable } from "@nestjs/common";
 import { UsersRepository } from "../../repositories/users-repository";
 import { WrongCredentialsError } from "../errors/wrong-credentials-error";
 
-interface GetProfileUseCaseRequest {
+interface GetUserUseCaseRequest {
   userId: string;
 }
 
-type GetProfileUseCaseResponse = Either<WrongCredentialsError, Partial<User>>;
+type GetUserUseCaseResponse = Either<WrongCredentialsError, User>;
 
 @Injectable()
-export class GetProfileUseCase {
+export class GetUserUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute({
     userId,
-  }: GetProfileUseCaseRequest): Promise<GetProfileUseCaseResponse> {
+  }: GetUserUseCaseRequest): Promise<GetUserUseCaseResponse> {
     const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       return left(new WrongCredentialsError());
     }
 
-    return right({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      isActive: user.isActive,
-      companyId: user.companyId,
-      departmentId: user.departmentId,
-      workScheduleId: user.workScheduleId,
-    });
+    return right(user);
   }
 }

@@ -10,4 +10,5 @@ export abstract class UsersRepository {
     page: number,
     pagesize: number
   ): Promise<User[]>;
+  abstract countByCompanyId(companyId: string): Promise<number>;
 }

@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common";
 import { Role } from "@prisma/client";
 import { z } from "zod";
+import { UserPresenter } from "../presenters/user-presenter";
 
 const editUserBodySchema = z.object({
   name: z.string().optional(),
@@ -72,18 +73,6 @@ export class EditUserController {
 
     const { user } = result.value;
 
-    return {
-      user: {
-        id: user.id.toString(),
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        isActive: user.isActive,
-        companyId: user.companyId,
-        departmentId: user.departmentId,
-        workScheduleId: user.workScheduleId,
-        profileImage: user.profileImage,
-      },
-    };
+    return UserPresenter.toHTTP(user);
   }
 }

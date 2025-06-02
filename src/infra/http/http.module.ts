@@ -22,24 +22,38 @@ import { EditLocationUseCase } from "@/domain/application/use-cases/location/edi
 import { FetchLocationsUseCase } from "@/domain/application/use-cases/location/fetch-locations";
 import { RegisterUseCase } from "@/domain/application/use-cases/register";
 import { AuthenticateUserUseCase } from "@/domain/application/use-cases/user/authenticate-user";
-import { GetProfileUseCase } from "@/domain/application/use-cases/user/get-profile";
+import { CreateUserUseCase } from "@/domain/application/use-cases/user/create-user";
+import { EditUserUseCase } from "@/domain/application/use-cases/user/edit-user";
+import { FetchUsersUseCase } from "@/domain/application/use-cases/user/fetch-users";
+import { GetUserUseCase } from "@/domain/application/use-cases/user/get-user";
 import { CreateWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/create-work-schedule";
 import { EditWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/edit-work-schedule";
 import { FetchWorkSchedulesUseCase } from "@/domain/application/use-cases/work-schedule/fetch-work-schedules";
 import { GetWorkScheduleUseCase } from "@/domain/application/use-cases/work-schedule/get-work-schedule";
 import { CreateDepartmentController } from "./controllers/create-department.controller";
 import { CreateLocationController } from "./controllers/create-location.controller";
+import { CreateUserController } from "./controllers/create-user.controller";
 import { DeleteDepartmentController } from "./controllers/delete-department.controller";
 import { DeleteLocationController } from "./controllers/delete-location.controller";
 import { EditDepartmentController } from "./controllers/edit-department.controller";
+import { EditUserController } from "./controllers/edit-user.controller";
 import { FetchDepartmentsController } from "./controllers/fetch-departments.controller";
+import { FetchUsersController } from "./controllers/fetch-users.controller";
+import { GetUserController } from "./controllers/get-user.controller";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
+    // Authorization
+    MeController,
     AuthenticateController,
     CreateAccountController,
-    MeController,
+
+    // Users
+    FetchUsersController,
+    CreateUserController,
+    EditUserController,
+    GetUserController,
 
     // Locations
     FetchLocationsController,
@@ -60,9 +74,15 @@ import { FetchDepartmentsController } from "./controllers/fetch-departments.cont
     EditWorkScheduleController,
   ],
   providers: [
+    // Authorization
     AuthenticateUserUseCase,
     RegisterUseCase,
-    GetProfileUseCase,
+
+    // Users
+    FetchUsersUseCase,
+    CreateUserUseCase,
+    EditUserUseCase,
+    GetUserUseCase,
 
     // Locations
     FetchLocationsUseCase,

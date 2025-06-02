@@ -1,6 +1,8 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Role } from "@prisma/client";
+import { Department } from "./department";
+import { WorkSchedule } from "./work-schedule";
 
 export interface UserProps {
   name: string;
@@ -11,6 +13,8 @@ export interface UserProps {
   companyId?: string;
   departmentId?: string;
   workScheduleId?: string;
+  department?: Department;
+  workSchedule?: WorkSchedule;
   profileImage?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -23,6 +27,24 @@ export class User extends Entity<UserProps> {
 
   set name(name: string) {
     this.props.name = name;
+    this.touch();
+  }
+
+  get workSchedule() {
+    return this.props.workSchedule;
+  }
+
+  set workSchedule(workSchedule: WorkSchedule | undefined) {
+    this.props.workSchedule = workSchedule;
+    this.touch();
+  }
+
+  get department() {
+    return this.props.department;
+  }
+
+  set department(department: Department | undefined) {
+    this.props.department = department;
     this.touch();
   }
 

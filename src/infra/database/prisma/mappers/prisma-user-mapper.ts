@@ -13,7 +13,7 @@ export class PrismaUserMapper {
         companyId: raw.companyId ?? undefined,
         departmentId: raw.departmentId ?? undefined,
         workScheduleId: raw.workScheduleId ?? undefined,
-        profileImage: raw.profileImage ?? undefined,
+        profileImage: raw?.profileImage ?? undefined,
       },
       raw.id
     );
