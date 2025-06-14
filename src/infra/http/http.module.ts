@@ -3,6 +3,7 @@ import { CryptographyModule } from "../cryptography/cryptography.module";
 
 import { DatabaseModule } from "../database/database.module";
 import { AuthenticateController } from "./controllers/authenticate.controller";
+import { CheckInController } from "./controllers/check-in.controller";
 import { CreateAccountController } from "./controllers/create-account.controller";
 import { CreateWorkScheduleController } from "./controllers/create-work-schedule.controller";
 import { EditLocationController } from "./controllers/edit-locations.controller";
@@ -21,6 +22,13 @@ import { DeleteLocationUseCase } from "@/domain/application/use-cases/location/d
 import { EditLocationUseCase } from "@/domain/application/use-cases/location/edit-location";
 import { FetchLocationsUseCase } from "@/domain/application/use-cases/location/fetch-locations";
 import { RegisterUseCase } from "@/domain/application/use-cases/register";
+import { AnalyticHomeUseCase } from "@/domain/application/use-cases/reports/analytic-home";
+import { ReportTimeMirrorUseCase } from "@/domain/application/use-cases/reports/report-time-mirror";
+import { CalculateDistanceUseCase } from "@/domain/application/use-cases/time-record/calculate-distance";
+import { CheckInUseCase } from "@/domain/application/use-cases/time-record/check-in";
+import { CompareImagesUseCase } from "@/domain/application/use-cases/time-record/compare-images";
+import { DefineNextTypeTimeRecordUseCase } from "@/domain/application/use-cases/time-record/define-next-type-time-record";
+import { FetchTimeRecordsUseCase } from "@/domain/application/use-cases/time-record/fetch-time-records";
 import { AuthenticateUserUseCase } from "@/domain/application/use-cases/user/authenticate-user";
 import { CreateUserUseCase } from "@/domain/application/use-cases/user/create-user";
 import { EditUserUseCase } from "@/domain/application/use-cases/user/edit-user";
@@ -38,7 +46,9 @@ import { DeleteLocationController } from "./controllers/delete-location.controll
 import { EditDepartmentController } from "./controllers/edit-department.controller";
 import { EditUserController } from "./controllers/edit-user.controller";
 import { FetchDepartmentsController } from "./controllers/fetch-departments.controller";
+import { FetchTimeRecordsController } from "./controllers/fetch-time-records.controller";
 import { FetchUsersController } from "./controllers/fetch-users.controller";
+import { GetReportController } from "./controllers/get-report.controller";
 import { GetUserController } from "./controllers/get-user.controller";
 
 @Module({
@@ -72,6 +82,13 @@ import { GetUserController } from "./controllers/get-user.controller";
     GetWorkScheduleController,
     FetchWorkSchedulesController,
     EditWorkScheduleController,
+
+    // TimeRecords
+    CheckInController,
+    FetchTimeRecordsController,
+
+    // Reports
+    GetReportController,
   ],
   providers: [
     // Authorization
@@ -101,6 +118,17 @@ import { GetUserController } from "./controllers/get-user.controller";
     GetWorkScheduleUseCase,
     FetchWorkSchedulesUseCase,
     EditWorkScheduleUseCase,
+
+    // TimeRecords
+    CheckInUseCase,
+    FetchTimeRecordsUseCase,
+    CalculateDistanceUseCase,
+    CompareImagesUseCase,
+    DefineNextTypeTimeRecordUseCase,
+
+    // Reports
+    AnalyticHomeUseCase,
+    ReportTimeMirrorUseCase,
   ],
 })
 export class HttpModule {}

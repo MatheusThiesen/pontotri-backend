@@ -1,8 +1,9 @@
-import { Either, right } from "@/core/either";
+import { Either, left, right } from "@/core/either";
 import { PaginationParams } from "@/core/repositories/pagination-params";
 import { Location } from "@/domain/entities/location";
 import { Injectable } from "@nestjs/common";
 import { LocationsRepository } from "../../repositories/locations-repository";
+import { UsersRepository } from "../../repositories/users-repository";
 
 interface FetchLocationsUseCaseRequest extends PaginationParams {
   userId: string;
@@ -24,19 +25,25 @@ type FetchLocationsUseCaseResponse = Either<
 
 @Injectable()
 export class FetchLocationsUseCase {
-  constructor(private locationsRepository: LocationsRepository) {}
+  constructor(
+    private locationsRepository: LocationsRepository,
+    private usersRepository: UsersRepository
+  ) {}
 
   async execute({
     userId,
     page,
     pagesize,
   }: FetchLocationsUseCaseRequest): Promise<FetchLocationsUseCaseResponse> {
+    const getUser = await this.usersRepository.findById(userId);
+    if (!getUser || !getUser.companyId) return left(null);
+
     const [locations, total] = await Promise.all([
-      this.locationsRepository.findMany({
+      this.locationsRepository.findManyByCompanyId(getUser.companyId, {
         page,
         pagesize,
       }),
-      this.locationsRepository.count(),
+      this.locationsRepository.countByCompanyId(getUser.companyId),
     ]);
 
     return right({

@@ -46,7 +46,7 @@ export class PrismaWorkScheduleRepository implements WorkScheduleRepository {
     return PrismaWorkScheduleMapper.toDomain(workSchedule);
   }
 
-  async findByCompanyId(companyId: string): Promise<WorkSchedule[]> {
+  async findManyByCompanyId(companyId: string): Promise<WorkSchedule[]> {
     const workSchedules = await this.prisma.workSchedule.findMany({
       where: { companyId },
       include: {

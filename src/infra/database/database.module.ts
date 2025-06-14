@@ -10,10 +10,14 @@ import { PrismaWorkScheduleRepository } from "./prisma/repositories/prisma-work-
 import { CompaniesRepository } from "@/domain/application/repositories/companies-repository";
 import { DepartmentsRepository } from "@/domain/application/repositories/departments-repository";
 import { LocationsRepository } from "@/domain/application/repositories/locations-repository";
+import { TimeRecordsRepository } from "@/domain/application/repositories/time-records-repository";
 import { UsersRepository } from "@/domain/application/repositories/users-repository";
 import { WorkScheduleRepository } from "@/domain/application/repositories/work-schedule-repository";
+import { PrismaTimeRecordsRepository } from "./prisma/repositories/prisma-time-records-repository";
+import { UtilsModule } from "./prisma/utils/utils.module";
 
 @Module({
+  imports: [UtilsModule],
   providers: [
     PrismaService,
     {
@@ -36,6 +40,10 @@ import { WorkScheduleRepository } from "@/domain/application/repositories/work-s
       provide: WorkScheduleRepository,
       useClass: PrismaWorkScheduleRepository,
     },
+    {
+      provide: TimeRecordsRepository,
+      useClass: PrismaTimeRecordsRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -44,6 +52,7 @@ import { WorkScheduleRepository } from "@/domain/application/repositories/work-s
     LocationsRepository,
     DepartmentsRepository,
     WorkScheduleRepository,
+    TimeRecordsRepository,
   ],
 })
 export class DatabaseModule {}

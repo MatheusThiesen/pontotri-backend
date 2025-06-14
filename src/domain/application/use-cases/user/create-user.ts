@@ -4,6 +4,7 @@ import { UsersRepository } from "@/domain/application/repositories/users-reposit
 import { User } from "@/domain/entities/user";
 import { Injectable } from "@nestjs/common";
 import { Role } from "@prisma/client";
+import { HashGenerator } from "../../cryptography/hash-generator";
 
 interface CreateUserUseCaseRequest {
   name: string;
@@ -25,7 +26,10 @@ type CreateUserUseCaseResponse = Either<
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private hashGenerator: HashGenerator
+  ) {}
 
   async execute({
     name,
@@ -43,10 +47,12 @@ export class CreateUserUseCase {
       return left(new UserAlreadyExistsError(email));
     }
 
+    const hashedPassword = await this.hashGenerator.hash(password);
+
     const user = User.create({
       name,
       email,
-      password,
+      password: hashedPassword,
       role,
       isActive: true,
       companyId,

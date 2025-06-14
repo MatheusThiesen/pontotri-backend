@@ -6,6 +6,8 @@ import { WorkScheduleRepository } from "../../repositories/work-schedule-reposit
 
 interface FetchWorkSchedulesUseCaseRequest extends PaginationParams {
   companyId: string;
+  page: number;
+  pagesize: number;
 }
 
 type FetchWorkSchedulesUseCaseResponse = Either<
@@ -30,7 +32,10 @@ export class FetchWorkSchedulesUseCase {
     pagesize,
   }: FetchWorkSchedulesUseCaseRequest): Promise<FetchWorkSchedulesUseCaseResponse> {
     const [workSchedules, total] = await Promise.all([
-      this.workScheduleRepository.findByCompanyId(companyId),
+      this.workScheduleRepository.findManyByCompanyId(companyId, {
+        page,
+        pagesize,
+      }),
       this.workScheduleRepository.countByCompanyId(companyId),
     ]);
 

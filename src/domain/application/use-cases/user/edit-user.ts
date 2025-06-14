@@ -5,6 +5,7 @@ import { UsersRepository } from "@/domain/application/repositories/users-reposit
 import { User } from "@/domain/entities/user";
 import { Injectable } from "@nestjs/common";
 import { Role } from "@prisma/client";
+import { HashGenerator } from "../../cryptography/hash-generator";
 
 interface EditUserUseCaseRequest {
   id: string;
@@ -28,7 +29,10 @@ type EditUserUseCaseResponse = Either<
 
 @Injectable()
 export class EditUserUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private hashGenerator: HashGenerator
+  ) {}
 
   async execute({
     id,
@@ -63,7 +67,8 @@ export class EditUserUseCase {
     }
 
     if (password) {
-      user.password = password;
+      const hashedPassword = await this.hashGenerator.hash(password);
+      user.password = hashedPassword;
     }
 
     if (role) {

@@ -9,6 +9,25 @@ import { PrismaService } from "../prisma.service";
 export class PrismaDepartmentsRepository implements DepartmentsRepository {
   constructor(private prisma: PrismaService) {}
 
+  async findManyByCompanyId(
+    companyId: string,
+    { page, pagesize }: PaginationParams
+  ): Promise<Department[]> {
+    const departments = await this.prisma.department.findMany({
+      take: pagesize,
+      skip: (page - 1) * pagesize,
+      where: { companyId },
+    });
+
+    return departments.map(PrismaDepartmentMapper.toDomain);
+  }
+
+  async countByCompanyId(companyId: string): Promise<number> {
+    const total = await this.prisma.department.count({ where: { companyId } });
+
+    return total;
+  }
+
   async create(department: Department): Promise<void> {
     const data = PrismaDepartmentMapper.toPrisma(department);
 
@@ -40,21 +59,6 @@ export class PrismaDepartmentsRepository implements DepartmentsRepository {
       },
       data,
     });
-  }
-
-  async findMany({ page, pagesize }: PaginationParams): Promise<Department[]> {
-    const departments = await this.prisma.department.findMany({
-      take: pagesize,
-      skip: (page - 1) * pagesize,
-    });
-
-    return departments.map(PrismaDepartmentMapper.toDomain);
-  }
-
-  async count(): Promise<number> {
-    const total = await this.prisma.department.count({});
-
-    return total;
   }
 
   async delete(department: Department): Promise<void> {

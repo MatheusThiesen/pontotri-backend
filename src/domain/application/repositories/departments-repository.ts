@@ -6,6 +6,9 @@ export abstract class DepartmentsRepository {
   abstract save(department: Department): Promise<void>;
   abstract delete(department: Department): Promise<void>;
   abstract findById(id: string): Promise<Department | null>;
-  abstract findMany(params: PaginationParams): Promise<Department[]>;
-  abstract count(): Promise<number>;
+  abstract findManyByCompanyId(
+    companyId: string,
+    params: PaginationParams
+  ): Promise<Department[]>;
+  abstract countByCompanyId(companyId: string): Promise<number>;
 }

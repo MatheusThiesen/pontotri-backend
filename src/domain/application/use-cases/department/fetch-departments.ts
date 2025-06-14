@@ -1,7 +1,8 @@
-import { Either, right } from "@/core/either";
+import { Either, left, right } from "@/core/either";
 import { DepartmentsRepository } from "@/domain/application/repositories/departments-repository";
 import { Department } from "@/domain/entities/department";
 import { Injectable } from "@nestjs/common";
+import { UsersRepository } from "../../repositories/users-repository";
 
 interface FetchDepartmentsUseCaseRequest {
   userId: string;
@@ -23,18 +24,25 @@ type FetchDepartmentsUseCaseResponse = Either<
 
 @Injectable()
 export class FetchDepartmentsUseCase {
-  constructor(private departmentRepository: DepartmentsRepository) {}
+  constructor(
+    private departmentRepository: DepartmentsRepository,
+    private usersRepository: UsersRepository
+  ) {}
 
   async execute({
     userId,
     page,
     pagesize,
   }: FetchDepartmentsUseCaseRequest): Promise<FetchDepartmentsUseCaseResponse> {
-    console.log(userId);
+    const getUser = await this.usersRepository.findById(userId);
+    if (!getUser || !getUser.companyId) return left(null);
 
     const [departments, total] = await Promise.all([
-      this.departmentRepository.findMany({ page, pagesize }),
-      this.departmentRepository.count(),
+      this.departmentRepository.findManyByCompanyId(getUser.companyId, {
+        page,
+        pagesize,
+      }),
+      this.departmentRepository.countByCompanyId(getUser.companyId),
     ]);
 
     return right({

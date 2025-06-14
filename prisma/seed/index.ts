@@ -1,4 +1,5 @@
 import { seedCalendarDays } from "./calendar-days.seed";
+import "./company-test.seed";
 
 async function main() {
   console.log("🔁 Iniciando seed completo...");

@@ -1,4 +1,5 @@
 import { UsersRepository } from "@/domain/application/repositories/users-repository";
+import { Company } from "@/domain/entities/company";
 import { Department } from "@/domain/entities/department";
 import { User } from "@/domain/entities/user";
 import { WorkSchedule } from "@/domain/entities/work-schedule";
@@ -12,7 +13,7 @@ export class PrismaUsersRepository implements UsersRepository {
 
   async findById(id: string): Promise<User | null> {
     const findUser = await this.prisma.user.findUnique({
-      include: { department: true, workSchedule: true },
+      include: { department: true, workSchedule: true, company: true },
       where: {
         id,
       },
@@ -28,6 +29,7 @@ export class PrismaUsersRepository implements UsersRepository {
       user.department = Department.create(findUser.department);
     if (findUser.workSchedule)
       user.workSchedule = WorkSchedule.create(findUser.workSchedule);
+    if (findUser.company) user.company = Company.create(findUser.company);
 
     return user;
   }

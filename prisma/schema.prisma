@@ -36,6 +36,7 @@ model User {
 
   sessions    Session[]
   timeRecords TimeRecord[]
+  requests    Request[]
 
   @@map("users")
 }
@@ -64,6 +65,8 @@ model Company {
   locations     Location[]
   holidays      Holiday[]
   workSchedules WorkSchedule[]
+  timeRecords   TimeRecord[]
+  requests      Request[]
 
   @@map("companies")
 }
@@ -76,8 +79,9 @@ model Location {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String
+  company     Company      @relation(fields: [companyId], references: [id])
+  companyId   String
+  timeRecords TimeRecord[]
 
   @@map("locations")
 }
@@ -104,9 +108,10 @@ model WorkSchedule {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users     User[]
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String
+  users       User[]
+  company     Company      @relation(fields: [companyId], references: [id])
+  companyId   String
+  timeRecords TimeRecord[]
 
   @@map("work_schedules")
 }
@@ -144,13 +149,6 @@ enum Weekday {
   SUNDAY
 }
 
-enum TimeRecordType {
-  ENTRY // Entrada no trabalho
-  EXIT // Saída do trabalho
-  BREAK_START // Início do intervalo
-  BREAK_END // Fim do intervalo
-}
-
 model CalendarDay {
   id        String   @id @default(uuid())
   date      DateTime @unique
@@ -158,6 +156,13 @@ model CalendarDay {
   createdAt DateTime @default(now())
 
   @@map("calendar_days")
+}
+
+enum HolidayScope {
+  NATIONAL
+  STATE
+  CITY
+  COMPANY
 }
 
 model Holiday {
@@ -176,23 +181,90 @@ model Holiday {
   @@map("holidays")
 }
 
-enum HolidayScope {
-  NATIONAL
-  STATE
-  CITY
-  COMPANY
+enum TimeRecordType {
+  ENTRY // Entrada no trabalho
+  EXIT // Saída do trabalho
+  BREAK_START // Início do intervalo
+  BREAK_END // Fim do intervalo
 }
 
 model TimeRecord {
   id        String         @id @default(uuid())
   type      TimeRecordType
-  photoUrl  String // URL da foto ou base64
-  latitude  Float
-  longitude Float
+  photoUrl  String? // URL da foto ou base64
+  latitude  Float?
+  longitude Float?
   createdAt DateTime       @default(now())
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  user           User          @relation(fields: [userId], references: [id])
+  userId         String
+  location       Location?     @relation(fields: [locationId], references: [id])
+  locationId     String?
+  workSchedule   WorkSchedule? @relation(fields: [workScheduleId], references: [id])
+  workScheduleId String?
+  company        Company       @relation(fields: [companyId], references: [id])
+  companyId      String
+  request        Request[]
 
   @@map("time_records")
+}
+
+enum RequestType {
+  TIME_ADJUSTMENT
+  ABSENCE
+}
+
+enum AbsenceKind {
+  ADJUSTMENT // "ajuste" 
+  VACATION // "ferias"
+  HEALTH // "saude"
+  OTHER // "outro"
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Request {
+  id         String        @id @default(uuid())
+  type       RequestType
+  status     RequestStatus @default(PENDING)
+  reason     String
+  response   String?
+  createdAt  DateTime      @default(now())
+  reviewedAt DateTime?
+
+  // Para TIME_ADJUSTMENT
+  adjustmentDate DateTime?
+  adjustedTimes  AdjustedTime[]
+
+  // Para ABSENCE
+  absenceStart DateTime?
+  absenceEnd   DateTime?
+  absenceKind  AbsenceKind?
+
+  // Comprovante em base64 (opcional)
+  attachmentBase64 String? // Arquivo em base64 como atestado, declaração, etc.
+
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  company      Company     @relation(fields: [companyId], references: [id])
+  companyId    String
+  timeRecord   TimeRecord? @relation(fields: [timeRecordId], references: [id])
+  timeRecordId String?
+
+  @@map("requests")
+}
+
+model AdjustedTime {
+  id   String         @id @default(uuid())
+  time String
+  type TimeRecordType
+
+  request   Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  requestId String
+
+  @@map("adjusted_times")
 }

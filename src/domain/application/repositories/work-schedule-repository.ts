@@ -1,3 +1,4 @@
+import { PaginationParams } from "@/core/repositories/pagination-params";
 import { WorkSchedule } from "@/domain/entities/work-schedule";
 import { BreakType, Weekday } from "@/domain/entities/work-schedule-day";
 
@@ -19,7 +20,10 @@ export interface CreateWorkScheduleData {
 export abstract class WorkScheduleRepository {
   abstract create(workSchedule: WorkSchedule): Promise<void>;
   abstract findById(id: string): Promise<WorkSchedule | null>;
-  abstract findByCompanyId(companyId: string): Promise<WorkSchedule[]>;
+  abstract findManyByCompanyId(
+    companyId: string,
+    params: PaginationParams
+  ): Promise<WorkSchedule[]>;
   abstract countByCompanyId(companyId: string): Promise<number>;
   abstract save(workSchedule: WorkSchedule): Promise<WorkSchedule>;
   abstract delete(id: string): Promise<void>;
