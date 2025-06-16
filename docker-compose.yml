@@ -1,19 +1,4 @@
-version: "3.9"
-
 services:
-  server:
-    container_name: pontotri-server
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "5555:5555"
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-    restart: always
-
   postgres:
     container_name: pontotri-db
     image: postgres:16
@@ -28,6 +13,3 @@ services:
       - ${POSTGRES_PORT}:5432
     volumes:
       - ./data/pg:/data/postgres
-
-volumes:
-  pgdata:
