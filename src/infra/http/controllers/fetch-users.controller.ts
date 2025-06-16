@@ -9,7 +9,7 @@ import { UserPresenter } from "../presenters/user-presenter";
 
 const fetchLocationsQuerySchema = z.object({
   page: z.coerce.number().min(1).default(1),
-  pagesize: z.coerce.number().min(1).max(100).default(10),
+  pagesize: z.coerce.number().min(1).max(1000).default(10),
 });
 
 type FetchLocationsQuery = z.infer<typeof fetchLocationsQuerySchema>;
